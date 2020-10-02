@@ -2,6 +2,7 @@ package com.mazharulsabbir.restapispring
 
 import com.mazharulsabbir.restapispring.data.AuthenticationRequest
 import com.mazharulsabbir.restapispring.data.AuthenticationResponse
+import com.mazharulsabbir.restapispring.data.ErrorResponse
 import com.mazharulsabbir.restapispring.data.user.User
 import com.mazharulsabbir.restapispring.utils.JwtUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import java.util.Collections.emptyList
+import kotlin.jvm.Throws
 
 @RestController
 class ApiEndPoints {
@@ -31,11 +33,16 @@ class ApiEndPoints {
     fun createAuthenticationToken(@RequestBody authenticationRequest: AuthenticationRequest): ResponseEntity<*>? {
         try {
             authenticationManager.authenticate(
-                    UsernamePasswordAuthenticationToken(authenticationRequest.username, authenticationRequest.password)
+                    UsernamePasswordAuthenticationToken(
+                            authenticationRequest.username,
+                            authenticationRequest.password
+                    )
             )
         } catch (e: BadCredentialsException) {
-            throw Exception("Incorrect username or password", e)
+            println("Login Failed: " + e.localizedMessage)
+            return ResponseEntity.ok(ErrorResponse(true, e.message, e.localizedMessage));
         }
+
         val userDetails = userDetailsService.loadUserByUsername(authenticationRequest.username)
         val jwt = jwtTokenUtil.generateToken(userDetails)
         return ResponseEntity.ok(AuthenticationResponse(jwt))
