@@ -2,6 +2,7 @@ package com.mazharulsabbir.restapispring
 
 import com.mazharulsabbir.restapispring.data.AuthenticationRequest
 import com.mazharulsabbir.restapispring.data.AuthenticationResponse
+import com.mazharulsabbir.restapispring.data.user.User
 import com.mazharulsabbir.restapispring.utils.JwtUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -41,7 +42,12 @@ class ApiEndPoints {
     }
 
     @RequestMapping("/users")
-    fun users(): List<String> {
-        return emptyList()
+    fun users(): List<User> {
+        val list = mutableListOf<User>()
+        val user = User(
+                username = "Sabbir"
+        )
+        list.add(user)
+        return list
     }
 }
