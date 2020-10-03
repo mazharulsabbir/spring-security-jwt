@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-import java.util.Collections.emptyList
-import kotlin.jvm.Throws
 
 @RestController
 class ApiEndPoints {
@@ -51,9 +49,7 @@ class ApiEndPoints {
     @RequestMapping("/users")
     fun users(): List<User> {
         val list = mutableListOf<User>()
-        val user = User(
-                username = "Sabbir"
-        )
+        val user = User()
         list.add(user)
         return list
     }
