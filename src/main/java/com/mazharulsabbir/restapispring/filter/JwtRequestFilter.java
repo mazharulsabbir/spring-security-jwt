@@ -1,6 +1,6 @@
 package com.mazharulsabbir.restapispring.filter;
 
-import com.mazharulsabbir.restapispring.MyUserDetailService;
+import com.mazharulsabbir.restapispring.service.MyUserDetailService;
 import com.mazharulsabbir.restapispring.utils.JwtUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

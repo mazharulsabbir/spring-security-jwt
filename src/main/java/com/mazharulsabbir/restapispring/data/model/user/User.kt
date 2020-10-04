@@ -1,4 +1,4 @@
-package com.mazharulsabbir.restapispring.data.user
+package com.mazharulsabbir.restapispring.data.model.user
 
 import java.util.*
 import javax.persistence.Entity

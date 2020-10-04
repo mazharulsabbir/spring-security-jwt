@@ -1,4 +1,4 @@
-package com.mazharulsabbir.restapispring
+package com.mazharulsabbir.restapispring.service
 
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
