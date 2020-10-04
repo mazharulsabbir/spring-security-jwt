@@ -1,21 +1,21 @@
 package com.mazharulsabbir.restapispring.data.api
 
-import com.mazharulsabbir.restapispring.service.MyUserDetailService
 import com.mazharulsabbir.restapispring.data.model.AuthenticationRequest
 import com.mazharulsabbir.restapispring.data.model.AuthenticationResponse
 import com.mazharulsabbir.restapispring.data.model.ErrorResponse
+import com.mazharulsabbir.restapispring.data.model.Log
 import com.mazharulsabbir.restapispring.data.model.user.User
+import com.mazharulsabbir.restapispring.data.repository.LogRepository
+import com.mazharulsabbir.restapispring.data.repository.UserRepository
+import com.mazharulsabbir.restapispring.service.MyUserDetailService
 import com.mazharulsabbir.restapispring.utils.JwtUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
-import kotlin.jvm.Throws
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class UserController {
@@ -27,6 +27,12 @@ class UserController {
 
     @Autowired
     private lateinit var userDetailsService: MyUserDetailService
+
+    @Autowired
+    private lateinit var repository: UserRepository
+
+    @Autowired
+    private lateinit var logRepository: LogRepository
 
     @RequestMapping(value = ["/auth"], method = [RequestMethod.POST])
     @Throws(Exception::class)
@@ -49,10 +55,13 @@ class UserController {
     }
 
     @RequestMapping("/users")
-    fun users(): List<User> {
-        val list = mutableListOf<User>()
-        val user = User()
-        list.add(user)
-        return list
+    fun users(): Iterable<User> {
+        return repository.findAll()
+    }
+
+    @GetMapping("/logs")
+    @ResponseBody
+    fun logs(): Iterable<Log> {
+        return logRepository.findAll()
     }
 }
