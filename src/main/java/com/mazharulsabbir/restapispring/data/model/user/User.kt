@@ -1,13 +1,15 @@
 package com.mazharulsabbir.restapispring.data.model.user
 
-import java.util.*
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity(name = "users")
 data class User(
         @Id
-        val uid: UUID,
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        val uid: Int?,
         val username: String? = null,
         val email: String? = null,
         val blood_group: String? = null,
@@ -15,7 +17,7 @@ data class User(
         val address: String? = null
 ) {
     constructor() : this(
-            UUID.randomUUID(),
+            null,
             null,
             null,
             null,

@@ -26,9 +26,6 @@ class UserController {
     private lateinit var jwtTokenUtil: JwtUtil
 
     @Autowired
-    private lateinit var userDetailsService: MyUserDetailService
-
-    @Autowired
     private lateinit var repository: UserRepository
 
     @Autowired
