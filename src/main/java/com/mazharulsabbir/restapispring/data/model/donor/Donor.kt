@@ -1,12 +1,12 @@
-package com.mazharulsabbir.restapispring.data.model.user
+package com.mazharulsabbir.restapispring.data.model.donor
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 
-@Entity(name = "users")
-data class User(
+@Entity(name = "donors")
+data class Donor(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         val uid: Int?,

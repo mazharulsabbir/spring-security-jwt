@@ -1,4 +1,4 @@
-package com.mazharulsabbir.restapispring.data.model
+package com.mazharulsabbir.restapispring.data.model.log
 
 import java.sql.Timestamp
 import javax.persistence.Entity
