@@ -2,6 +2,7 @@ package com.mazharulsabbir.restapispring;
 
 import com.mazharulsabbir.restapispring.filter.JwtRequestFilter;
 import com.mazharulsabbir.restapispring.service.MyUserDetailService;
+import com.mazharulsabbir.restapispring.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,15 +21,12 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyUserDetailService myUserDetailsService;
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        auth.userDetailsService(myUserDetailsService).passwordEncoder(jwtUtil.passwordEncoder());
     }
 
     @Override

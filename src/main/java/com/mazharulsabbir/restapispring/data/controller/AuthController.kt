@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 import kotlin.jvm.Throws
+import kotlin.math.log
+
+private const val TAG = "AuthController"
 
 @RestController
 class AuthController {
@@ -33,7 +37,7 @@ class AuthController {
     fun createAuthenticationToken(@RequestBody loginCredential: LoginCredential): ResponseEntity<*>? {
 
         try {
-            val auth = authenticationManager.authenticate(
+            authenticationManager.authenticate(
                     UsernamePasswordAuthenticationToken(
                             loginCredential.username,
                             loginCredential.password
@@ -44,9 +48,11 @@ class AuthController {
             return ResponseEntity.ok(ErrorResponse(true, e.message, e.localizedMessage))
         }
 
-        val userDetails = MyUserDetailService.loadUserByUsername(loginCredential.username)
+        val userDetails = MyUserDetailService().loadUserByUsername(loginCredential.username)
         val jwt = jwtTokenUtil.generateToken(userDetails)
-        return ResponseEntity.ok(LoginResponse(jwt))
+        return ResponseEntity.ok(LoginResponse(
+                jwt,
+                Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+        )
     }
-
 }
