@@ -1,6 +1,6 @@
 package com.mazharulsabbir.restapispring.service;
 
-import com.mazharulsabbir.restapispring.data.model.auth.LoginCredential;
+import com.mazharulsabbir.restapispring.data.model.auth.AuthCredential;
 import com.mazharulsabbir.restapispring.data.repository.AuthRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -20,7 +20,7 @@ public class MyUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LoginCredential credential = null;
+        AuthCredential credential = null;
         try {
             credential = authRepo.findByUsername(username);
         } catch (Exception e) {

@@ -1,8 +1,8 @@
 package com.mazharulsabbir.restapispring.data.controller
 
 import com.mazharulsabbir.restapispring.data.model.ErrorResponse
-import com.mazharulsabbir.restapispring.data.model.auth.LoginCredential
-import com.mazharulsabbir.restapispring.data.model.auth.LoginResponse
+import com.mazharulsabbir.restapispring.data.model.auth.AuthCredential
+import com.mazharulsabbir.restapispring.data.model.auth.AuthResponse
 import com.mazharulsabbir.restapispring.data.repository.AuthRepo
 import com.mazharulsabbir.restapispring.service.MyUserDetailService
 import com.mazharulsabbir.restapispring.utils.JwtUtil
@@ -11,13 +11,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.*
 import kotlin.jvm.Throws
-import kotlin.math.log
 
 private const val TAG = "AuthController"
 
@@ -34,13 +30,13 @@ class AuthController {
 
     @RequestMapping(value = ["/auth"], method = [RequestMethod.POST])
     @Throws(Exception::class)
-    fun createAuthenticationToken(@RequestBody loginCredential: LoginCredential): ResponseEntity<*>? {
+    fun createAuthenticationToken(@RequestBody authCredential: AuthCredential): ResponseEntity<*>? {
 
         try {
             authenticationManager.authenticate(
                     UsernamePasswordAuthenticationToken(
-                            loginCredential.username,
-                            loginCredential.password
+                            authCredential.username,
+                            authCredential.password
                     )
             )
         } catch (e: BadCredentialsException) {
@@ -48,11 +44,23 @@ class AuthController {
             return ResponseEntity.ok(ErrorResponse(true, e.message, e.localizedMessage))
         }
 
-        val userDetails = MyUserDetailService().loadUserByUsername(loginCredential.username)
+        val userDetails = MyUserDetailService().loadUserByUsername(authCredential.username)
         val jwt = jwtTokenUtil.generateToken(userDetails)
-        return ResponseEntity.ok(LoginResponse(
+        return ResponseEntity.ok(AuthResponse(
                 jwt,
                 Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
         )
+    }
+
+    @PostMapping("/register")
+    fun createNewCredential(authCredential: AuthCredential): Int {
+        val encodePassword = jwtTokenUtil.passwordEncoder().encode(authCredential.password)
+        val credential = AuthCredential(
+                authCredential.id,
+                authCredential.username,
+                encodePassword,
+                authCredential.role
+        )
+        return authRepo.save(credential).id
     }
 }
