@@ -32,9 +32,6 @@ class AuthController {
     @Throws(Exception::class)
     fun createAuthenticationToken(@RequestBody loginCredential: LoginCredential): ResponseEntity<*>? {
 
-        val result = authRepo.findByUsernameAndPassword(loginCredential.username, loginCredential.password)
-        println("===============> User Id: ${result.id}")
-
         try {
             val auth = authenticationManager.authenticate(
                     UsernamePasswordAuthenticationToken(
@@ -42,15 +39,12 @@ class AuthController {
                             loginCredential.password
                     )
             )
-            println("===========> Auth: $auth")
         } catch (e: BadCredentialsException) {
             println("Login Failed: " + e.localizedMessage)
             return ResponseEntity.ok(ErrorResponse(true, e.message, e.localizedMessage))
         }
 
         val userDetails = MyUserDetailService.loadUserByUsername(loginCredential.username)
-        println("=============> User Details: $userDetails")
-
         val jwt = jwtTokenUtil.generateToken(userDetails)
         return ResponseEntity.ok(LoginResponse(jwt))
     }

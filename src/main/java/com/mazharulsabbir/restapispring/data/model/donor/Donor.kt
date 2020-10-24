@@ -1,20 +1,27 @@
 package com.mazharulsabbir.restapispring.data.model.donor
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity(name = "donors")
 data class Donor(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         val uid: Int?,
-        val username: String? = null,
-        val email: String? = null,
-        val blood_group: String? = null,
-        val mobile: String? = null,
-        val address: String? = null
+
+        @Column(unique = true, nullable = false)
+        val username: String?,
+
+        @Column(nullable = false)
+        val email: String?,
+
+        @Column(nullable = false)
+        val blood_group: String?,
+
+        @Column(nullable = false)
+        val mobile: String?,
+
+        @Column(nullable = false)
+        val address: String?
 ) {
     constructor() : this(
             null,

@@ -1,5 +1,6 @@
 package com.mazharulsabbir.restapispring.data.controller
 
+import com.mazharulsabbir.restapispring.data.model.ErrorResponse
 import com.mazharulsabbir.restapispring.data.model.donor.Donor
 import com.mazharulsabbir.restapispring.data.repository.DonorRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,8 +17,13 @@ class DonorController {
     }
 
     @PostMapping("/donor")
-    fun createDonor(donor: Donor): Donor {
+    fun createDonor(@RequestBody donor: Donor): Any {
         println(donor)
-        return repository.save(donor)
+        return try {
+            repository.save(donor)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ErrorResponse(true, "Failed to create account", e.toString())
+        }
     }
 }
