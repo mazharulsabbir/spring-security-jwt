@@ -6,12 +6,12 @@ import javax.persistence.*
 data class AuthCredential(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Int,
+        val id: Int?,
         @Column(unique = true,nullable = false)
         val username: String?,
         @Column(nullable = false)
-        val password: String?,
+        var password: String?,
         val role: String?
 ) {
-    constructor() : this(1, null, null, null)
+    constructor() : this(null, null, null, null)
 }

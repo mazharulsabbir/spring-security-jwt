@@ -28,7 +28,7 @@ public class MyUserDetailService implements UserDetailsService {
         }
         if (credential != null) {
             if (credential.getUsername() != null && credential.getPassword() != null) {
-                System.out.println("Login Successful");
+                System.out.println("====Login Successful====");
                 return new User(credential.getUsername(), credential.getPassword(), new ArrayList<>());
             } else return new User(" "," ", new ArrayList<>());
         } else return new User(" "," ", new ArrayList<>());

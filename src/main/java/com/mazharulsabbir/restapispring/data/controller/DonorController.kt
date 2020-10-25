@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/donor")
 class DonorController {
     @Autowired
     private lateinit var repository: DonorRepository
@@ -16,13 +17,13 @@ class DonorController {
         return repository.findAll()
     }
 
-    @PostMapping("/donor")
+    @PostMapping("/create")
     fun createDonor(@RequestBody donor: Donor): Any {
         println(donor)
         return try {
             repository.save(donor)
         } catch (e: Exception) {
-            e.printStackTrace()
+            println(e.message)
             ErrorResponse(true, "Failed to create account", e.toString())
         }
     }
