@@ -38,7 +38,7 @@ public class JwtUtil {
             final Claims claims = extractAllClaims(token);
             return claimsResolver.apply(claims);
         } catch (Exception e) {
-            System.out.println("Token Expired!");
+            System.out.println("Token Expired! " + e.getLocalizedMessage());
             return null;
         }
     }
